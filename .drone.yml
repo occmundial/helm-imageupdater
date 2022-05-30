@@ -1,0 +1,68 @@
+kind: Pipeline
+type: docker
+name: build-ci-helm-imageupdater
+
+
+steps:
+- name: build-and-push-image
+  image: plugins/docker
+  settings:
+    repo: occmundial/helm-imageupdater
+    tags:
+      - latest
+      - ${DRONE_COMMIT_SHA:0:8}
+    username:
+      from_secret: docker_deveops_user
+    password:
+      from_secret: docker_deveops_password
+
+
+trigger:
+  branch:
+    - main
+
+---
+kind: pipeline
+name: ppr-helm-imageupdater-notify
+type: docker
+clone:
+  disable: true
+steps:
+- name: notify
+  image: plugins/slack-blame
+  settings:
+    token: 
+      from_secret: token_notify
+    channel: ppr-deployments
+    success_template: |
+        :white_check_mark: Project: ${DRONE_REPO}  
+        Build: #{{ build.number }} 
+        Event: `{{ build.event }}`
+        Commit: <${CI_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+        Branch: <${CI_REPO_LINK}/commits/${DRONE_SOURCE_BRANCH}|${DRONE_SOURCE_BRANCH}>
+        Author: ${DRONE_COMMIT_AUTHOR}  <${DRONE_BUILD_LINK}|Visit build page ↗>
+                
+    failure_template: |
+        :x: Project: ${DRONE_REPO} 
+        Build: #{{ build.number }}
+        Event: `{{ build.event }}`
+        Commit: <${CI_REPO_LINK}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+        Branch: <${CI_REPO_LINK}/commits/${DRONE_SOURCE_BRANCH}|${DRONE_SOURCE_BRANCH}>
+        Author: ${DRONE_COMMIT_AUTHOR}  <${DRONE_BUILD_LINK}|Visit build page ↗>      
+  when:
+    status:
+      - success
+      - failure
+trigger:
+  branch:
+    - main
+  event:
+    exclude:
+    - pull_request
+  status:
+    - success
+    - failure
+depends_on:
+- build-and-push-image 
+
+
