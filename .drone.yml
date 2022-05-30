@@ -1,4 +1,4 @@
-kind: Pipeline
+kind: pipeline
 type: docker
 name: build-ci-helm-imageupdater
 
@@ -63,6 +63,6 @@ trigger:
     - success
     - failure
 depends_on:
-- build-and-push-image 
+- build-ci-helm-imageupdater
 
 
