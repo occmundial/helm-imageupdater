@@ -55,5 +55,5 @@ If you have two charts or more in the same values.yaml, you can use `--chart [ch
 
 ## Contributing
 
-See [CONTRIBUTING.md]()
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
