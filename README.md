@@ -1,19 +1,20 @@
-# Helm image updater
+# Helm image updater.
 
+image-updater.py helps you to update the tag and repository of your values.yaml, you can integrate image-updater in your CI/CD pipeline to update the tag for new version or new repository.
 
-
-# Requirements
+# Requirements.
 
 - Python > 3.10.
 - Poetry.
 - Docker (Only for build a container).
 
-## Build
+## Build.
 
  - **Install requirements:**
 
     `poetry install`
- ## Run
+ 
+ ## Usage.
 
 ```bash
 Usage: image-updater.py [OPTIONS] COMMAND [ARGS]...
@@ -28,13 +29,13 @@ Commands:
 ```
 
 
-## Set new tag.
+### Set new tag.
 
 ```bash
 ./image-updater.py tag --file  ~/workspace/valuestest.yaml -v v1.0
 ```
 
-## Set new repository.
+### Set new repository.
 
 ```bash
 ./image-updater.py repository --file  ~/workspace/valuestest.yaml -r occmundial/api-vader
@@ -49,11 +50,11 @@ If you have two charts or more in the same values.yaml, you can use `--chart [ch
 ./image-updater.py tag --file  ~/workspace/valuestest.yaml -v v1.0 --chart vader
 ```
 
-## Set both values and repository
+### Set both values and repository.
 
     ./image-updater.py image --file  ~/workspace/valuestest.yaml -v v1.0 -r occmundial/vader --chart vader 
 
-## Contributing
+## Contributing.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
 
