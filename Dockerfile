@@ -10,8 +10,6 @@ RUN $HOME/.poetry/bin/poetry config virtualenvs.create false \
 RUN pip install pyinstaller
 COPY image-updater.py .
 RUN pyinstaller --clean --onefile image-updater.py
-RUN pwd
-RUN tree .
 
 FROM debian
 
