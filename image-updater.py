@@ -135,9 +135,22 @@ def repository(repository, file, chart):
         print(f"An error occurred {e}")
 
 
+@click.option("-f", "--file", help="Chart file to set new appversion")
+@click.option("--version", "-v", help="New version to set")
+@click.command()
+def chart(file, version):
+    try:
+        chart_file = file_loader(file)
+        chart_file["appVersion"] = version
+        file_saver(file, chart_file)
+    except Exception as e:
+        print(f"An error occurred {e}")
+
+
 cli.add_command(tag)
 cli.add_command(repository)
 cli.add_command(image)
+cli.add_command(chart)
 
 if __name__ == "__main__":
     cli()
